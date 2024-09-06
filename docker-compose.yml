@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./FloortsHub
+      dockerfile: Dockerfile
+    container_name: floortshub_web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./FloortsHub:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - SECRET_KEY='django-insecure-rymx@vq^jjz2j+gte@4313-qqc(((^2yefw_&-vnag@8074x=m'
+      - ALLOWED_HOSTS=0.0.0.0,127.0.0.1
+
+  bot:
+    build:
+      context: ./TgBot
+      dockerfile: Dockerfile
+    container_name: tg_bot
+    volumes:
+      - ./TgBot:/bot
+    environment:
+      - TOKEN='7270123329:AAEc9eZpiHKY-QsUszlAbeP_PtDGHweRoH0'
+    depends_on:
+      - web
